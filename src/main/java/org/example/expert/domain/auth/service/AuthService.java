@@ -38,11 +38,15 @@ public class AuthService {
         User newUser = new User(
                 signupRequest.getEmail(),
                 encodedPassword,
-                userRole
+                userRole,
+                signupRequest.getNickname()
         );
         User savedUser = userRepository.save(newUser);
 
-        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), userRole);
+        // 프론트엔드 개발자가 JWT에서 유저의 닉네임을 꺼내 화면에 보여주길 원한다.
+        // = JWT 토큰 발급시 nickname도 포함되어 있기를 바란다는 뜻 !!
+        // JWT는 단순한 서버-클라이언트 간의 신뢰 가능한 정보(TOKEN)라 nickname이 토큰에 들어있으면 프론트가 별도의 API없이 화면에 표시 가능하다고 함.
+        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), userRole, savedUser.getNickname());
 
         return new SignupResponse(bearerToken);
     }
@@ -56,7 +60,7 @@ public class AuthService {
             throw new AuthException("잘못된 비밀번호입니다.");
         }
 
-        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUserRole());
+        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUserRole(), user.getNickname());
 
         return new SigninResponse(bearerToken);
     }

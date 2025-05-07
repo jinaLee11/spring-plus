@@ -21,10 +21,16 @@ public class User extends Timestamped {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    public User(String email, String password, UserRole userRole) {
+    // 1-2
+    // user 테이블에 nickname 컬럼 추가하고 싶으면 User Entity에 nickname 필드 추가하면 된다!
+    private String nickname;
+
+    // 생성자에도 nickname 추가
+    public User(String email, String password, UserRole userRole, String nickname) {
         this.email = email;
         this.password = password;
         this.userRole = userRole;
+        this.nickname = nickname;
     }
 
     private User(Long id, String email, UserRole userRole) {
