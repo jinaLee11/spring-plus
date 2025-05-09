@@ -30,7 +30,9 @@ public class Todo extends Timestamped {
     @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "todo")
+    // 할일을 새로 저장할 시 할일을 생성한 유저는 담당자로 자동 등록 => cascade 기능으로 구현
+    // todo 1 : managers n 매니저 여러명 할일 한개
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.PERSIST) // persist : 부모 저장시 자식도 저장
     private List<Manager> managers = new ArrayList<>();
 
     public Todo(String title, String contents, String weather, User user) {
